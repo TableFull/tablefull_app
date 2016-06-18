@@ -4,17 +4,15 @@ const express = require('express'),
       bodyParser= require('body-parser'),
       router = require('./routes');
 
-
-if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').load();
-}
+require('dotenv').load();
 
 
-app.use('/javascripts', express.static(__dirname + "/../client/javascripts"));
-app.use('/stylesheets', express.static(__dirname + "/..client/stylesheets"));
-app.use('/reservations', express.static(__dirname + "/../client/views/reservations"));
-app.use('/users', express.static(__dirname + "/../client/views/users"));
-app.use('/venues', express.static(__dirname + "/../client/views/venues"));
+app.use('/assets', express.static(__dirname + "/../client/"));
+// app.use('/javascripts', express.static(__dirname + "/../client/javascripts"));
+// app.use('/stylesheets', express.static(__dirname + "/../client/stylesheets"));
+// app.use('/reservations', express.static(__dirname + "/../client/views/reservations"));
+// app.use('/users', express.static(__dirname + "/../client/views/users"));
+// app.use('/venues', express.static(__dirname + "/../client/views/venues"));
 
 
 
@@ -25,7 +23,8 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use('/venues', router.venues);
 app.use('/users', router.users);
 app.use('/auth', router.auth);
-app.use('/manage/venue', router.manage);
+app.use('/reservations', router.reservations);
+app.use('/manage/venue/', router.manage);
 app.use('/manage/venue/:venue_id/events', router.events);
 app.use('/manage/venue/:venue_id/tables', router.tables);
 app.use('/manage/venue/:venue_id/calendar', router.calendar);
@@ -33,12 +32,12 @@ app.use('/manage/venue/:venue_id/calendar', router.calendar);
 
 
 app.get('/', (req, res)=>{
-  res.render(__dirname+ '/../client/home.jade')
+  res.sendFile('layout.html', {root: './client'})
 });
 
-app.get('*', (req, res)=>{
-  res.render(__dirname+ '/../client/error.jade')
-});
+// app.get('*', (req, res)=>{
+//   res.sendFile('error.html', {root: './client'})
+// });
 
 
 app.listen('3000', function(){
